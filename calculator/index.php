@@ -1,7 +1,13 @@
 <?php
-$a = (float) $_GET['op1'];
-$b = (float) $_GET['op2'];
-$operator = $_GET['func'];
+if (array_key_exists('op1', $_GET) && array_key_exists('op2', $_GET) && array_key_exists('func', $_GET)){
+  $a = (float) $_GET['op1'];
+  $b = (float) $_GET['op2'];
+  $operator = $_GET['func'];
+} else {
+  $a = null;
+  $b = null;
+  $operator = '';
+}
 switch($operator) {
   case "add":
     $res = $a + $b;
@@ -23,19 +29,21 @@ switch($operator) {
     $res = $a / $b;
     $func = "/";
     break;
+  case "":
+    break;
   default:
     $exception = "Unsupported operation";
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
   <title>Calculator</title>
   <body>
     <p>
       <?php
-      if ($operator) {
+      if ($operator != "") {
         echo "Result:<br/>";
-        if (!$exception) {
+        if (!isset($exception)) {
           printf("%.4f %s %.4f = %.5f", $a, $func, $b, $res);
         } else {
           echo $exception;
